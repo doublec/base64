@@ -10,7 +10,7 @@ int
 base64_encode(const unsigned char *in, unsigned int inlen, char *out);
 
 int
-base64_decode(const char *in, unsigned int inlen, unsigned char *out);
+base64_decode(const char *in, unsigned int inlen, unsigned char *out, size_t *outline);
 
 
 #endif /* __BASE64_H__ */

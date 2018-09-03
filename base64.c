@@ -92,7 +92,7 @@ base64_encode(const unsigned char *in, unsigned int inlen, char *out)
 }
 
 int
-base64_decode(const char *in, unsigned int inlen, unsigned char *out)
+base64_decode(const char *in, unsigned int inlen, unsigned char *out, size_t* outlen)
 {
 	unsigned int i, j;
 
@@ -100,8 +100,12 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 		int c;
 		int s = i % 4; 			/* from 8/gcd(6, 8) */
 
-		if (in[i] == '=')
+		if (in[i] == '=') {
+			if (outlen) {
+				*outlen = j;
+			}
 			return BASE64_OK;
+		}
 
 		if (in[i] < BASE64DE_FIRST || in[i] > BASE64DE_LAST ||
 		    (c = base64de[in[i] - BASE64DE_FIRST]) == -1)
@@ -130,6 +134,9 @@ base64_decode(const char *in, unsigned int inlen, unsigned char *out)
 		}
 	}
 
+	if (outlen) {
+		*outlen = j;
+	}
 	return BASE64_OK;
 }
 
